@@ -11,7 +11,7 @@ test('user can view profile settings page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn($assert) => $assert
+        fn ($assert) => $assert
             ->component('settings/Profile')
             ->has('mustVerifyEmail')
             ->has('status')

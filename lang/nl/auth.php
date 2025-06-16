@@ -2,7 +2,7 @@
 
 return [
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
     |--------------------------------------------------------------------------
@@ -13,8 +13,8 @@ return [
     |
     */
 
-	'failed' => 'Ongeldige inloggegevens.',
-	'password' => 'Het ingevoerde wachtwoord is onjuist.',
-	'throttle' => 'Te veel inlogpogingen. Probeer het nog eens over :seconds seconden.',
+    'failed' => 'Ongeldige inloggegevens.',
+    'password' => 'Het ingevoerde wachtwoord is onjuist.',
+    'throttle' => 'Te veel inlogpogingen. Probeer het nog eens over :seconds seconden.',
 
 ];

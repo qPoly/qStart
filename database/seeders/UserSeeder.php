@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!User::where('email', 'info@qpoly.nl')->exists()) {
+        if (! User::where('email', 'info@qpoly.nl')->exists()) {
             User::factory()->create([
                 'name' => 'qPoly',
                 'email' => 'info@qpoly.nl',

@@ -2,7 +2,7 @@
 
 return [
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Password Reset Language Lines
     |--------------------------------------------------------------------------
@@ -13,10 +13,10 @@ return [
     |
     */
 
-	'reset' => 'Je wachtwoord is opnieuw ingesteld.',
-	'sent' => 'We hebben je een e-mail gestuurd met herstellink.',
-	'throttled' => 'Wacht a.u.b. voordat je het opnieuw probeert.',
-	'token' => 'Deze wachtwoordherstellink is ongeldig.',
-	'user' => "E-mailadres onbekend.",
+    'reset' => 'Je wachtwoord is opnieuw ingesteld.',
+    'sent' => 'We hebben je een e-mail gestuurd met herstellink.',
+    'throttled' => 'Wacht a.u.b. voordat je het opnieuw probeert.',
+    'token' => 'Deze wachtwoordherstellink is ongeldig.',
+    'user' => 'E-mailadres onbekend.',
 
 ];

@@ -11,7 +11,7 @@ test('user can view users index page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn($assert) => $assert
+        fn ($assert) => $assert
             ->component('users/Index')
             ->has('users')
     );
@@ -25,7 +25,7 @@ test('user can view create user page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn($assert) => $assert
+        fn ($assert) => $assert
             ->component('users/CreateEdit')
     );
 });
@@ -60,7 +60,7 @@ test('user can view edit user page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn($assert) => $assert
+        fn ($assert) => $assert
             ->component('users/CreateEdit')
             ->has('user')
     );

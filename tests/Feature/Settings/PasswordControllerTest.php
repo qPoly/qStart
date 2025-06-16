@@ -11,7 +11,7 @@ test('user can view password settings page', function () {
 
     $response->assertStatus(200);
     $response->assertInertia(
-        fn($assert) => $assert
+        fn ($assert) => $assert
             ->component('settings/Password')
     );
 });

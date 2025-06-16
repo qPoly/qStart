@@ -38,7 +38,7 @@ class UserRequest extends FormRequest
         ];
 
         // Password is required for new users, optional for updates
-        if (!$user) {
+        if (! $user) {
             $rules['password'] = ['required', Password::defaults(), 'confirmed'];
         } else {
             $rules['password'] = ['nullable', Password::defaults(), 'confirmed'];

@@ -27,9 +27,9 @@ return [
     'file' => ':attribute moet een bestand zijn.',
     'between' => [
         'numeric' => ':attribute moet tussen :min en :max zijn.',
-        'file'    => ':attribute moet tussen :min en :max kilobytes zijn.',
-        'string'  => ':attribute moet tussen :min en :max tekens zijn.',
-        'array'   => ':attribute moet tussen :min en :max items bevatten.',
+        'file' => ':attribute moet tussen :min en :max kilobytes zijn.',
+        'string' => ':attribute moet tussen :min en :max tekens zijn.',
+        'array' => ':attribute moet tussen :min en :max items bevatten.',
     ],
     'integer' => ':attribute moet een geheel getal zijn.',
     'current_password' => 'Wachtwoord is onjuist.',
