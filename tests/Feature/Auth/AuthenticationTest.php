@@ -31,6 +31,17 @@ test('users can not authenticate with invalid password', function () {
     $this->assertGuest();
 });
 
+test('users can not authenticate with invalid email', function () {
+    $user = User::factory()->create();
+
+    $this->post('/login', [
+        'email' => 'wrong-email',
+        'password' => 'password',
+    ]);
+
+    $this->assertGuest();
+});
+
 test('users can logout', function () {
     $user = User::factory()->create();
 
