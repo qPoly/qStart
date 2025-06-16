@@ -7,6 +7,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus } from 'lucide-vue-next';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/composables/useInitials';
 
 interface Props {
     users: User[];
@@ -20,6 +22,8 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('users.index'),
     },
 ];
+
+const { getInitials } = useInitials();
 </script>
 
 <template>
@@ -39,6 +43,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead></TableHead>
                         <TableHead>Naam</TableHead>
                         <TableHead>E-mailadres</TableHead>
                         <TableHead>Aangemaakt op</TableHead>
@@ -46,6 +51,14 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="user in users" :key="user.id" @click="router.visit(route('users.edit', user.id))">
+                        <TableCell class="w-0">
+                            <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
+                                <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />
+                                <AvatarFallback class="rounded-lg text-black dark:text-white">
+                                    {{ getInitials(user.name) }}
+                                </AvatarFallback>
+                            </Avatar>
+                        </TableCell>
                         <TableCell>{{ user.name }}</TableCell>
                         <TableCell>{{ user.email }}</TableCell>
                         <TableCell>{{ new Date(user.created_at).toLocaleString('nl-NL') }}</TableCell>
