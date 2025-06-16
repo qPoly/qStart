@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { Head } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
-import type { User } from '@/types';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus } from 'lucide-vue-next';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/composables/useInitials';
+import AppLayout from '@/layouts/AppLayout.vue';
+import type { User } from '@/types';
+import { type BreadcrumbItem } from '@/types';
+import { Head, router } from '@inertiajs/vue3';
+import { Plus } from 'lucide-vue-next';
 
 interface Props {
     users: User[];
@@ -32,7 +31,7 @@ const { getInitials } = useInitials();
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
-            <div class="flex justify-between mb-4">
+            <div class="mb-4 flex justify-between">
                 <h1 class="text-2xl font-bold">Gebruikers</h1>
                 <Button @click="router.visit(route('users.create'))">
                     <Plus />

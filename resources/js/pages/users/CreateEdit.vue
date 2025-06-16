@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
 import InputError from '@/components/InputError.vue';
-import { type BreadcrumbItem } from '@/types';
-import type { User } from '@/types';
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
-import { Head } from '@inertiajs/vue3';
-import { useForm } from '@inertiajs/vue3';
-import { Trash2, Save, Plus, X } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import AppLayout from '@/layouts/AppLayout.vue';
+import type { User } from '@/types';
+import { type BreadcrumbItem } from '@/types';
+import { Head, router, useForm } from '@inertiajs/vue3';
+import { Plus, Save, Trash2, X } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 interface Props {
     user?: User;
@@ -58,8 +56,8 @@ const deleteUser = () => {
     <Head :title="user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen'" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="p-4 max-w-md">
-            <div class="flex justify-between mb-4">
+        <div class="max-w-md p-4">
+            <div class="mb-4 flex justify-between">
                 <h1 class="text-2xl font-bold">
                     {{ user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen' }}
                 </h1>
@@ -108,7 +106,7 @@ const deleteUser = () => {
                                     Weet je zeker dat je deze gebruiker wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
                                 </DialogDescription>
                             </DialogHeader>
-                            <DialogFooter class="flex justify-end gap-4 mt-4">
+                            <DialogFooter class="mt-4 flex justify-end gap-4">
                                 <Button variant="outline" @click="isDeleteDialogOpen = false">
                                     <X />
                                     Annuleren
