@@ -21,22 +21,15 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Confirm your password" description="This is a secure area of the application. Please confirm your password before continuing.">
-        <Head title="Confirm password" />
+    <AuthLayout title="Bevestig je wachtwoord" description="Dit is een beveiligd gedeelte van de applicatie. Bevestig je wachtwoord voordat je verder gaat.">
+
+        <Head title="Wachtwoord bevestigen" />
 
         <form @submit.prevent="submit">
             <div class="space-y-6">
                 <div class="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                        id="password"
-                        type="password"
-                        class="mt-1 block w-full"
-                        v-model="form.password"
-                        required
-                        autocomplete="current-password"
-                        autofocus
-                    />
+                    <Label htmlFor="password">Wachtwoord</Label>
+                    <Input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" autofocus />
 
                     <InputError :message="form.errors.password" />
                 </div>
@@ -44,7 +37,7 @@ const submit = () => {
                 <div class="flex items-center">
                     <Button class="w-full" :disabled="form.processing">
                         <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                        Confirm Password
+                        Wachtwoord bevestigen
                     </Button>
                 </div>
             </div>

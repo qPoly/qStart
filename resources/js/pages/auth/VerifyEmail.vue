@@ -17,20 +17,21 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
-        <Head title="Email verification" />
+    <AuthLayout title="E-mail verifiëren" description="Verifieer je e-mailadres door op de link te klikken die we je net hebben gemaild.">
+
+        <Head title="E-mail verificatie" />
 
         <div v-if="status === 'verification-link-sent'" class="mb-4 text-center text-sm font-medium text-green-600">
-            A new verification link has been sent to the email address you provided during registration.
+            Er is een nieuwe verificatielink verzonden naar het e-mailadres dat je hebt opgegeven tijdens de registratie.
         </div>
 
         <form @submit.prevent="submit" class="space-y-6 text-center">
             <Button :disabled="form.processing" variant="secondary">
                 <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                Resend verification email
+                Verificatie e-mail opnieuw versturen
             </Button>
 
-            <TextLink :href="route('logout')" method="post" as="button" class="mx-auto block text-sm"> Log out </TextLink>
+            <TextLink :href="route('logout')" method="post" as="button" class="mx-auto block text-sm">Uitloggen</TextLink>
         </form>
     </AuthLayout>
 </template>
