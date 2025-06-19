@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -32,10 +32,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $validated = $request->validated();
-        $validated['password'] = Hash::make($validated['password']);
-
-        User::create($validated);
+        User::create($request->validated());
 
         return redirect()->route('users.index');
     }
@@ -65,9 +62,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
+        if (!isset($validated['password'])) {
             unset($validated['password']);
         }
 
