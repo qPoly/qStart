@@ -1,19 +1,40 @@
 <script setup lang="ts">
+import debounce from 'lodash/debounce';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { routeWithQuery } from '@/composables/router';
 import { useInitials } from '@/composables/useInitials';
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { User } from '@/types';
-import { type BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Column, UserPreferences, User } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
-import { Plus } from 'lucide-vue-next';
+import { ArrowDownAz, ArrowUpAz, ArrowUpDown, Plus, Search } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
+import PagePreferencesComponent from '@/components/PagePreferences.vue';
+import Pagination from '@/components/Pagination.vue';
+import { Input } from '@/components/ui/input';
 
 interface Props {
-    users: User[];
+    users: {
+        from: number;
+        to: number;
+        total: number;
+        per_page: number;
+        current_page: number;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+        data: User[];
+    };
+    filters: {
+        search?: string;
+    };
+    userPreferences: UserPreferences;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,6 +42,30 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('users.index'),
     },
 ];
+
+const pagePrefs = ref<UserPreferences>(props.userPreferences);
+const search = ref(props.filters.search || '');
+
+const performSearch = debounce((value: string) => {
+    router.get(
+        routeWithQuery('users.index'),
+        { search: value },
+        { preserveState: true, preserveScroll: true }
+    );
+}, 300);
+
+const performSort = debounce((column: Column) => {
+    if (column.unsortable) return;
+
+    router.get(routeWithQuery('users.index'), {
+        sortColumn: column.key,
+        sortDirection: pagePrefs.value.sortColumn === column.key && pagePrefs.value.sortDirection === 'asc' ? 'desc' : 'asc'
+    }, { replace: true })
+}, 300);
+
+watch(search, (value) => {
+    performSearch(value);
+});
 
 const { getInitials } = useInitials();
 </script>
@@ -31,39 +76,65 @@ const { getInitials } = useInitials();
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
-            <div class="mb-4 flex justify-between">
+            <div class="flex justify-between mb-4">
                 <h1 class="text-2xl font-bold">Gebruikers</h1>
-                <Button @click="router.visit(route('users.create'))">
-                    <Plus />
-                    Gebruiker toevoegen
-                </Button>
+                <div class="flex items-center gap-2">
+                    <PagePreferencesComponent page="users" v-model="pagePrefs" />
+                    <Button @click="router.visit(routeWithQuery('users.create'))">
+                        <Plus />
+                        Project toevoegen
+                    </Button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="relative">
+                    <Search class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input v-model="search" type="search" placeholder="Zoeken..." class="pl-8" />
+                </div>
             </div>
 
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead></TableHead>
-                        <TableHead>Naam</TableHead>
-                        <TableHead>E-mailadres</TableHead>
-                        <TableHead>Aangemaakt op</TableHead>
+                        <TableHead v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" :width="column.width">
+                            <div class="flex gap-2 items-center" :class="{ 'cursor-pointer': !column.unsortable }" @click="performSort(column)">
+                                {{ column.label }}
+                                <template v-if="!column.unsortable">
+                                    <ArrowUpDown v-if="pagePrefs.sortColumn != column.key" class="size-3.5" />
+                                    <ArrowUpAz v-else-if="pagePrefs.sortDirection == 'asc'" class="size-3.5 text-foreground" />
+                                    <ArrowDownAz v-else-if="pagePrefs.sortDirection == 'desc'" class="size-3.5 text-foreground" />
+                                </template>
+                            </div>
+                        </TableHead>
+                        <TableHead class="w-1"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="user in users" :key="user.id" @click="router.visit(route('users.edit', user.id))">
-                        <TableCell class="w-0">
-                            <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
-                                <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />
-                                <AvatarFallback class="rounded-lg text-black dark:text-white">
-                                    {{ getInitials(user.name) }}
-                                </AvatarFallback>
-                            </Avatar>
+                    <TableRow v-for="user in users.data" :key="user.id">
+                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="router.visit(routeWithQuery('users.edit', user.id))">
+                            <template v-if="column.key === 'avatar'">
+                                <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
+                                    <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />
+                                    <AvatarFallback class="rounded-lg text-black dark:text-white">
+                                        {{ getInitials(user.name) }}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </template>
+
+                            <template v-if="['id', 'name', 'email'].includes(column.key)">
+                                {{ user[column.key as keyof User] }}
+                            </template>
+
+                            <template v-if="['created_at', 'updated_at', 'email_verified_at'].includes(column.key)">
+                                {{ user[column.key as keyof User] ? new Date(user[column.key as keyof User] as string).toLocaleString('nl-NL') : '' }}
+                            </template>
                         </TableCell>
-                        <TableCell>{{ user.name }}</TableCell>
-                        <TableCell>{{ user.email }}</TableCell>
-                        <TableCell>{{ new Date(user.created_at).toLocaleString('nl-NL') }}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
+
+            <Pagination :data="users" class="mt-4" />
         </div>
     </AppLayout>
 </template>

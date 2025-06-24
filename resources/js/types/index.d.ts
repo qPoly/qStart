@@ -25,6 +25,20 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     sidebarOpen: boolean;
 };
 
+export interface UserPreferences {
+    columns?: Column[];
+    sortColumn?: string;
+    sortDirection?: 'asc' | 'desc';
+    perPage?: number;
+}
+
+export interface Column {
+    key: string;
+    label: string;
+    width?: number;
+    visible?: boolean;
+    unsortable?: boolean;
+}
 export interface User {
     id: number;
     name: string;
