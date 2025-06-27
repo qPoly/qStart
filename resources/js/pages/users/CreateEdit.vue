@@ -4,14 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { can } from '@/composables/auth';
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { User } from '@/types';
+import type { Role, User } from '@/types';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { Plus, Save, Trash2, X } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 interface Props {
+    roles: Role[];
     user?: User;
 }
 
@@ -33,11 +36,17 @@ const form = useForm({
     email: props.user?.email || '',
     password: '',
     password_confirmation: '',
+    role: props.user?.roles[0]?.name || '',
 });
 
 const isDeleteDialogOpen = ref(false);
 
 const submit = () => {
+    form.transform(data => ({
+        ...data,
+        role: data.role,
+    }));
+
     if (props.user) {
         form.put(route('users.update', props.user.id));
     } else {
@@ -56,7 +65,7 @@ const deleteUser = () => {
     <Head :title="user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen'" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="max-w-md p-4">
+        <div class="max-w-sm p-4">
             <div class="mb-4 flex justify-between">
                 <h1 class="text-2xl font-bold">
                     {{ user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen' }}
@@ -68,6 +77,21 @@ const deleteUser = () => {
                     <Label for="name">Naam</Label>
                     <Input id="name" v-model="form.name" type="text" />
                     <InputError :message="form.errors.name" />
+                </div>
+
+                <div class="space-y-2" v-if="can('roles.assign')">
+                    <Label>Rol</Label>
+                    <Select v-model="form.role">
+                        <SelectTrigger class="w-full">
+                            <SelectValue placeholder="Selecteer een rol" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem v-for="role in props.roles" :key="role.id" :value="role.name">
+                                {{ role.name }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <InputError :message="form.errors.role" />
                 </div>
 
                 <div class="space-y-2">
@@ -93,7 +117,7 @@ const deleteUser = () => {
                         <X />
                         Annuleren
                     </Button>
-                    <Dialog v-if="user" v-model:open="isDeleteDialogOpen">
+                    <Dialog v-if="user && can('users.delete')" v-model:open="isDeleteDialogOpen">
                         <DialogTrigger asChild>
                             <Button variant="destructive">
                                 <Trash2 />

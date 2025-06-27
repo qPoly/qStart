@@ -72,6 +72,11 @@ class User extends Authenticatable
                 'default' => 'asc'
             ],
             [
+                'key' => 'role',
+                'label' => 'Rol',
+                'visible' => true
+            ],
+            [
                 'key' => 'email',
                 'label' => 'E-mailadres',
                 'visible' => true

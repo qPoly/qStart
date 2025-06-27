@@ -13,6 +13,7 @@ import { ref, watch } from 'vue';
 import PagePreferencesComponent from '@/components/PagePreferences.vue';
 import Pagination from '@/components/Pagination.vue';
 import { Input } from '@/components/ui/input';
+import { can } from '@/composables/auth';
 
 interface Props {
     users: {
@@ -80,9 +81,9 @@ const { getInitials } = useInitials();
                 <h1 class="text-2xl font-bold">Gebruikers</h1>
                 <div class="flex items-center gap-2">
                     <PagePreferencesComponent page="users" v-model="pagePrefs" />
-                    <Button @click="router.visit(routeWithQuery('users.create'))">
+                    <Button v-if="can('users.create')" @click="router.visit(routeWithQuery('users.create'))">
                         <Plus />
-                        Project toevoegen
+                        Gebruiker toevoegen
                     </Button>
                 </div>
             </div>
@@ -112,7 +113,7 @@ const { getInitials } = useInitials();
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="user in users.data" :key="user.id">
-                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="router.visit(routeWithQuery('users.edit', user.id))">
+                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="can('users.update') ? router.visit(routeWithQuery('users.edit', user.id)) : null">
                             <template v-if="column.key === 'avatar'">
                                 <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
                                     <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />
@@ -120,6 +121,12 @@ const { getInitials } = useInitials();
                                         {{ getInitials(user.name) }}
                                     </AvatarFallback>
                                 </Avatar>
+                            </template>
+
+                            <template v-if="column.key === 'role'">
+                                <div class="comma-separated">
+                                    <span v-for="role of user.roles">{{ role.name }}</span>
+                                </div>
                             </template>
 
                             <template v-if="['id', 'name', 'email'].includes(column.key)">

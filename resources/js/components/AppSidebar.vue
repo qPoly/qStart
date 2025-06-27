@@ -6,6 +6,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { can } from '@/composables/auth';
 
 const mainNavItems: NavItem[] = [
     {
@@ -13,11 +14,11 @@ const mainNavItems: NavItem[] = [
         href: route('dashboard'),
         icon: LayoutGrid,
     },
-    {
+    ...can('users.read') ? [{
         title: 'Gebruikers',
         href: route('users.index'),
         icon: Users,
-    },
+    }] : [],
 ];
 </script>
 

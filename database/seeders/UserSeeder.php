@@ -12,12 +12,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        if (! User::where('email', 'info@qpoly.nl')->exists()) {
-            User::factory()->create([
+        $user = User::firstOrCreate(
+            ['email' => 'info@qpoly.nl'],
+            [
                 'name' => 'qPoly',
-                'email' => 'info@qpoly.nl',
                 'password' => 'password',
-            ]);
+            ]
+        );
+
+        if (!$user->hasRole('Manager')) {
+            $user->assignRole('Manager');
         }
     }
 }

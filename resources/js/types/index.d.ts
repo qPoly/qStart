@@ -39,11 +39,18 @@ export interface Column {
     visible?: boolean;
     unsortable?: boolean;
 }
+
+export interface Role {
+    id: number;
+    name: string;
+}
 export interface User {
     id: number;
     name: string;
     email: string;
     avatar?: string;
+    roles: Role[];
+    permissions: string[];
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
