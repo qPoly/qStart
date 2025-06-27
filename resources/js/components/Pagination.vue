@@ -28,7 +28,7 @@ defineProps<Props>();
 
         <Pagination :items-per-page="data.per_page" :total="data.total" :default-page="data.current_page">
             <PaginationContent>
-                <template v-for="link of data.links">
+                <div v-for="link of data.links" :key="link.label">
                     <template v-if="link.url">
                         <PaginationPrevious v-if="link.label == '[icon-left]'" @click="router.visit(link.url)" />
                         <PaginationNext v-else-if="link.label == '[icon-right]'" @click="router.visit(link.url)" />
@@ -44,7 +44,7 @@ defineProps<Props>();
                             {{ link.label }}
                         </PaginationItem>
                     </template>
-                </template>
+                </div>
             </PaginationContent>
         </Pagination>
     </div>

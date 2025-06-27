@@ -125,7 +125,7 @@ const { getInitials } = useInitials();
 
                             <template v-if="column.key === 'role'">
                                 <div class="comma-separated">
-                                    <span v-for="role of user.roles">{{ role.name }}</span>
+                                    <span v-for="role of user.roles" :key="role.id">{{ role.name }}</span>
                                 </div>
                             </template>
 
