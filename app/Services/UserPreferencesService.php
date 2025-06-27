@@ -39,7 +39,7 @@ class UserPreferencesService
 
         // Get and validate number of items per page
         $defaultPerPage = 15;
-        $userPreferences['perPage'] = request()->input('per_page', $userPreferences['perPage'] ?? $defaultPerPage);
+        $userPreferences['perPage'] = request()->input('perPage', $userPreferences['perPage'] ?? $defaultPerPage);
         $userPreferences['perPage'] = is_numeric($userPreferences['perPage']) ? (int) $userPreferences['perPage'] : $defaultPerPage;
 
         // Update user preferences
