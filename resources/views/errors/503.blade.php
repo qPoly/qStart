@@ -1,41 +1,27 @@
-<!doctype html>
-<title>Updating...</title>
-<style>
-    body {
-        text-align: center;
-        padding: 150px;
-    }
+<!DOCTYPE html>
+<html lang="nl">
 
-    h1 {
-        font-size: 50px;
-    }
+<head>
+    <title>Updating...</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+        body {
+            padding-top: 150px;
+            text-align: center;
+            font: 20px Helvetica, sans-serif;
+            color: #333;
+        }
 
-    body {
-        font: 20px Helvetica, sans-serif;
-        color: #333;
-    }
+        h1 {
+            font-size: 50px;
+        }
+    </style>
+</head>
 
-    article {
-        display: block;
-        text-align: left;
-        width: 650px;
-        margin: 0 auto;
-    }
-
-    a {
-        color: #dc8100;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #333;
-        text-decoration: none;
-    }
-</style>
-
-<article>
+<body>
     <h1>We&rsquo;ll be back soon!</h1>
-    <div>
-        <p>Er wordt op dit moment een update geplaatst. Ververs de pagina over 10 seconden en probeer het dan nog eens.</p>
-    </div>
-</article>
+    <p>Er wordt op dit moment een update geplaatst. Ververs de pagina over 10 seconden en probeer het dan nog eens.</p>
+</body>
+
+</html>
