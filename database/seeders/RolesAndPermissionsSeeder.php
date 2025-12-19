@@ -19,11 +19,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create manager permissions
         $managerPermissions = [
-            'users.read',
-            'users.create',
-            'users.update',
-            'users.delete',
-            'roles.assign',
+            'user.read',
+            'user.create',
+            'user.update',
+            'user.delete',
+
+            'user.assign.role',
         ];
 
         foreach ($managerPermissions as $permission) {

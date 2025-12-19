@@ -14,7 +14,7 @@ const mainNavItems: NavItem[] = [
         href: route('dashboard'),
         icon: LayoutGrid,
     },
-    ...can('users.read') ? [{
+    ...can('user.read') ? [{
         title: 'Gebruikers',
         href: route('users.index'),
         icon: Users,
@@ -29,7 +29,7 @@ const mainNavItems: NavItem[] = [
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
                         <Link :href="route('dashboard')">
-                        <AppLogo />
+                            <AppLogo />
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>

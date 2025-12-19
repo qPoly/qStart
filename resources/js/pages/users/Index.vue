@@ -81,7 +81,7 @@ const { getInitials } = useInitials();
                 <h1 class="text-2xl font-bold">Gebruikers</h1>
                 <div class="flex items-center gap-2">
                     <PagePreferencesComponent page="users" v-model="pagePrefs" />
-                    <Button v-if="can('users.create')" @click="router.visit(routeWithQuery('users.create'))">
+                    <Button v-if="can('user.create')" @click="router.visit(routeWithQuery('users.create'))">
                         <Plus />
                         Gebruiker toevoegen
                     </Button>
@@ -113,7 +113,7 @@ const { getInitials } = useInitials();
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="user in users.data" :key="user.id">
-                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="can('users.update') ? router.visit(routeWithQuery('users.edit', user.id)) : null">
+                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="can('user.update') ? router.visit(routeWithQuery('users.edit', user.id)) : null">
                             <template v-if="column.key === 'avatar'">
                                 <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
                                     <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />

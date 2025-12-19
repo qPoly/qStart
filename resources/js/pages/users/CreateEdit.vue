@@ -79,7 +79,7 @@ const deleteUser = () => {
                     <InputError :message="form.errors.name" />
                 </div>
 
-                <div class="space-y-2" v-if="can('roles.assign')">
+                <div class="space-y-2" v-if="can('user.assign.role')">
                     <Label>Rol</Label>
                     <Select v-model="form.role">
                         <SelectTrigger class="w-full">
@@ -117,7 +117,7 @@ const deleteUser = () => {
                         <X />
                         Annuleren
                     </Button>
-                    <Dialog v-if="user && can('users.delete')" v-model:open="isDeleteDialogOpen">
+                    <Dialog v-if="user && can('user.delete')" v-model:open="isDeleteDialogOpen">
                         <DialogTrigger asChild>
                             <Button variant="destructive">
                                 <Trash2 />

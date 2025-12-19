@@ -20,10 +20,10 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:users.read', only: ['index', 'show']),
-            new Middleware('can:users.create', only: ['create', 'store']),
-            new Middleware('can:users.update', only: ['edit', 'update']),
-            new Middleware('can:users.delete', only: ['destroy']),
+            new Middleware('can:user.read', only: ['index', 'show']),
+            new Middleware('can:user.create', only: ['create', 'store']),
+            new Middleware('can:user.update', only: ['edit', 'update']),
+            new Middleware('can:user.delete', only: ['destroy']),
         ];
     }
 
@@ -94,7 +94,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user = User::create($validated);
 
-        if ($request->user()->can('roles.assign')) {
+        if ($request->user()->can('user.assign.role')) {
             $user->syncRoles([$validated['role'] ?? Role::first()->name]);
         }
 
@@ -133,7 +133,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->update($validated);
 
-        if ($request->user()->can('roles.assign')) {
+        if ($request->user()->can('user.assign.role')) {
             $user->syncRoles([$validated['role']]);
         }
 
