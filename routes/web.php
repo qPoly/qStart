@@ -12,7 +12,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::put('page-preferences/{page}', [UserPreferencesController::class, 'update'])->name('page-preferences.update');
+    Route::put('page-preferences/{page}', [UserPreferencesController::class, 'update'])->name('pagePreferences.update');
 
     Route::resource('users', UserController::class);
 });

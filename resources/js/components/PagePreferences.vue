@@ -17,7 +17,7 @@ const props = defineProps<Props>();
 const preferences = defineModel<UserPreferences>({ required: true });
 
 const updatePreferences = () => {
-    axios.put(route('page-preferences.update', props.page), {
+    axios.put(route('pagePreferences.update', props.page), {
         columns: preferences.value.columns ? preferences.value.columns.map(column => ({ ...column })) : [],
         sortColumn: preferences.value.sortColumn,
         sortDirection: preferences.value.sortDirection,
