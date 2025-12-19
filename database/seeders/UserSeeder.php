@@ -23,5 +23,11 @@ class UserSeeder extends Seeder
         if (!$user->hasRole('Manager')) {
             $user->assignRole('Manager');
         }
+
+        $users = User::factory()->count(9)->create();
+
+        foreach ($users as $user) {
+            $user->assignRole('Medewerker');
+        }
     }
 }
