@@ -95,7 +95,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::create($validated);
 
         if ($request->user()->can('user.assign.role')) {
-            $user->syncRoles([$validated['role'] ?? Role::first()->name]);
+            $user->syncRoles([$validated['role'] ?? 'Medewerker']);
         }
 
         return redirect()->route('users.index');
