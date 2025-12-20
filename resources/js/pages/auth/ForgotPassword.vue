@@ -4,21 +4,15 @@ import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { login } from '@/routes';
+import { email } from '@/routes/password';
+import { Form, Head } from '@inertiajs/vue3';
 
 defineProps<{
     status?: string;
 }>();
-
-const form = useForm({
-    email: '',
-});
-
-const submit = () => {
-    form.post(route('password.email'));
-};
 </script>
 
 <template>
@@ -31,24 +25,24 @@ const submit = () => {
         </div>
 
         <div class="space-y-6">
-            <form @submit.prevent="submit">
+            <Form v-bind="email.form()" v-slot="{ errors, processing }">
                 <div class="grid gap-2">
                     <Label for="email">E-mailadres</Label>
-                    <Input id="email" type="email" name="email" autocomplete="off" v-model="form.email" autofocus placeholder="email@voorbeeld.nl" />
-                    <InputError :message="form.errors.email" />
+                    <Input id="email" type="email" name="email" autocomplete="off" autofocus placeholder="email@voorbeeld.nl" />
+                    <InputError :message="errors.email" />
                 </div>
 
                 <div class="my-6 flex items-center justify-start">
-                    <Button class="w-full" :disabled="form.processing">
-                        <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
+                    <Button class="w-full" :disabled="processing" data-test="email-password-reset-link-button">
+                        <Spinner v-if="processing" />
                         Stuur wachtwoord reset link
                     </Button>
                 </div>
-            </form>
+            </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
                 <span>Of ga terug naar</span>
-                <TextLink :href="route('login')">inloggen</TextLink>
+                <TextLink :href="login()">inloggen</TextLink>
             </div>
         </div>
     </AuthLayout>

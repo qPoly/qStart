@@ -1,6 +1,6 @@
 <?php
 
-use Opcodes\LogViewer\Enums\FolderSortingMethod;
+use Opcodes\LogViewer\Enums\SortingMethod;
 use Opcodes\LogViewer\Enums\SortingOrder;
 use Opcodes\LogViewer\Enums\Theme;
 
@@ -41,7 +41,17 @@ return [
     |
     */
 
-    'route_path' => 'logs',
+    'route_path' => 'log-viewer',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Viewer Assets Path
+    |--------------------------------------------------------------------------
+    | The path to the Log Viewer assets.
+    |
+    */
+
+    'assets_path' => 'vendor/log-viewer',
 
     /*
     |--------------------------------------------------------------------------
@@ -275,10 +285,13 @@ return [
         'use_local_storage' => true,
 
         // Method to sort the folders. Other options: `Alphabetical`, `ModifiedTime`
-        'folder_sorting_method' => FolderSortingMethod::ModifiedTime,
+        'folder_sorting_method' => SortingMethod::ModifiedTime,
 
         // Order to sort the folders. Other options: `Ascending`, `Descending`
         'folder_sorting_order' => SortingOrder::Descending,
+
+        // Method for sorting log-files into directories. Other options: `Alphabetical`, `ModifiedTime`
+        'file_sorting_method' => SortingMethod::ModifiedTime,
 
         // Order to sort the logs. Other options: `Ascending`, `Descending`
         'log_sorting_order' => SortingOrder::Descending,
@@ -293,6 +306,19 @@ return [
         'shorter_stack_traces' => false,
 
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exclude IP from identifiers
+    |--------------------------------------------------------------------------
+    | By default, file and folder identifiers include the server's IP address
+    | to ensure uniqueness. In load-balanced environments with shared storage,
+    | this can cause "No results" errors. Set to true to exclude IP addresses
+    | from identifier generation for consistent results across servers.
+    |
+    */
+
+    'exclude_ip_from_identifiers' => env('LOG_VIEWER_EXCLUDE_IP_FROM_IDENTIFIERS', false),
 
     /*
     |--------------------------------------------------------------------------

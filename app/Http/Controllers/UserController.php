@@ -115,8 +115,8 @@ class UserController extends Controller implements HasMiddleware
     public function edit(User $user)
     {
         return Inertia::render('users/CreateEdit', [
-            'roles' => Role::all(),
-            'user' => $user->load('roles'),
+            'roles' => Role::all(['id', 'name']),
+            'user' => $user->load('roles:id,name'),
         ]);
     }
 

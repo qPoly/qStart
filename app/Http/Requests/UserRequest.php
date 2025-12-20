@@ -49,9 +49,9 @@ class UserRequest extends FormRequest
 
         // Password is required for new users, optional for updates
         if (! $user) {
-            $rules['password'] = ['required', Password::defaults(), 'confirmed'];
+            $rules['password'] = ['required', Password::defaults()];
         } else {
-            $rules['password'] = ['nullable', Password::defaults(), 'confirmed'];
+            $rules['password'] = ['nullable', Password::defaults()];
         }
 
         return $rules;
@@ -71,7 +71,6 @@ class UserRequest extends FormRequest
             'email.unique' => 'E-mailadres is al in gebruik',
 
             'password.required' => 'Wachtwoord is verplicht',
-            'password.confirmed' => 'Wachtwoorden komen niet overeen',
             'password.min' => 'Wachtwoord moet minimaal 8 tekens bevatten',
             'password.mixed' => 'Wachtwoord moet minimaal één hoofdletter en één kleine letter bevatten',
             'password.numbers' => 'Wachtwoord moet minimaal één cijfer bevatten',

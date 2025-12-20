@@ -8,6 +8,7 @@ import { UserPreferences } from '@/types';
 import Select from './ui/select/Select.vue';
 import draggable from 'vuedraggable'
 import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { update } from '@/routes/pagePreferences';
 
 interface Props {
     page: string;
@@ -17,7 +18,7 @@ const props = defineProps<Props>();
 const preferences = defineModel<UserPreferences>({ required: true });
 
 const updatePreferences = () => {
-    axios.put(route('pagePreferences.update', props.page), {
+    axios.put(update.url({ page: props.page }), {
         columns: preferences.value.columns ? preferences.value.columns.map(column => ({ ...column })) : [],
         sortColumn: preferences.value.sortColumn,
         sortDirection: preferences.value.sortDirection,
@@ -33,7 +34,7 @@ const updatePreferences = () => {
                 <Settings class="h-4 w-4" />
             </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-56 p-3">
+        <DropdownMenuContent align="end" class="min-w-56 p-3">
             <h4 class="mb-2 text-sm font-medium">Kolommen</h4>
             <div class="space-y-2">
                 <draggable v-model="preferences.columns" item-key="key" @end="updatePreferences()" handle=".handle">
@@ -52,7 +53,7 @@ const updatePreferences = () => {
             <div class="mt-4 pt-3 border-t">
                 <h4 class="mb-2 text-sm font-medium">Resultaten per pagina</h4>
                 <Select v-model="preferences.perPage" @update:model-value="updatePreferences()">
-                    <SelectTrigger class="w-[180px]">
+                    <SelectTrigger class="w-full">
                         <SelectValue placeholder="Selecteer" />
                     </SelectTrigger>
                     <SelectContent>

@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import UserInfo from '@/components/UserInfo.vue';
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import {
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { logout } from '@/routes';
+import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, Settings } from 'lucide-vue-next';
@@ -25,17 +32,23 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('profile.edit')" prefetch as="button">
-            <Settings class="mr-2 h-4 w-4" />
-            Instellingen
+            <Link class="block w-full" :href="edit()" prefetch as="button">
+                <Settings class="mr-2 h-4 w-4" />
+                Settings
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
-        <Link class="block w-full" method="post" :href="route('logout')" @click="handleLogout" as="button">
-        <LogOut class="mr-2 h-4 w-4" />
-        Uitloggen
+        <Link
+            class="block w-full"
+            :href="logout()"
+            @click="handleLogout"
+            as="button"
+            data-test="logout-button"
+        >
+            <LogOut class="mr-2 h-4 w-4" />
+            Log out
         </Link>
     </DropdownMenuItem>
 </template>

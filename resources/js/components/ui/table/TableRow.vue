@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { inject } from 'vue'
+import { inject, type HTMLAttributes } from "vue"
+import { cn } from "@/lib/utils"
 
 const props = defineProps<{
-  class?: HTMLAttributes['class']
+  class?: HTMLAttributes["class"]
 }>()
 
-const isInHeader = inject('isTableHeader', false)
+const isInHeader = inject('isTableHeader', false);
 </script>
 
 <template>
