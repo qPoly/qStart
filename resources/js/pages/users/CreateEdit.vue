@@ -24,7 +24,7 @@ const title = props.user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Gebruikers',
-        href: index.url(),
+        href: index.url({ mergeQuery: {} }),
     },
     {
         title: title,
@@ -44,7 +44,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </h1>
             </div>
 
-            <Form :action="user ? update(user.id) : store()" #default="{ errors, processing }" class="space-y-6">
+            <Form :action="user ? update(user.id, { mergeQuery: {} }) : store({ mergeQuery: {} })" #default="{ errors, processing }" class="space-y-6">
                 <div class="space-y-2">
                     <Label for="name">Naam</Label>
                     <Input id="name" name="name" type="text" :default-value="user?.name" />
@@ -79,7 +79,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </div>
 
                 <div class="flex justify-end gap-4">
-                    <Button type="button" variant="outline" @click="router.visit(index.url())">
+                    <Button type="button" variant="outline" @click="router.visit(index.url({ mergeQuery: {} }))">
                         <X />
                         Annuleren
                     </Button>
@@ -91,7 +91,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             </Button>
                         </DialogTrigger>
                         <DialogContent>
-                            <Form :action="destroy(user!.id)" #default="{ processing }">
+                            <Form :action="destroy(user!.id, { mergeQuery: {} })" #default="{ processing }">
                                 <DialogHeader>
                                     <DialogTitle>Gebruiker verwijderen</DialogTitle>
                                     <DialogDescription>

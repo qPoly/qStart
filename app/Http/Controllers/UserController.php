@@ -98,7 +98,7 @@ class UserController extends Controller implements HasMiddleware
             $user->syncRoles([$validated['role'] ?? 'Medewerker']);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index', $request->query());
     }
 
     /**
@@ -137,16 +137,16 @@ class UserController extends Controller implements HasMiddleware
             $user->syncRoles([$validated['role']]);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index', $request->query());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user, Request $request)
     {
         $user->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index', $request->query());
     }
 }
