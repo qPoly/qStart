@@ -23,7 +23,12 @@ defineProps<Props>();
 <template>
     <div class="flex items-center justify-between">
         <div class="text-sm text-muted-foreground">
-            {{ data.from }} t/m {{ data.to }} van {{ data.total }} resultaten
+            <template v-if="data.total > 0">
+                {{ data.from }} t/m {{ data.to }} van {{ data.total }} resultaten
+            </template>
+            <template v-else>
+                Geen resultaten
+            </template>
         </div>
 
         <Pagination :items-per-page="data.per_page" :total="data.total" :default-page="data.current_page">
