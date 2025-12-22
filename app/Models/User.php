@@ -82,10 +82,6 @@ class User extends Authenticatable
                 'visible' => true
             ],
             [
-                'key' => 'email_verified_at',
-                'label' => 'E-mailadres geverifieerd op'
-            ],
-            [
                 'key' => 'created_at',
                 'label' => 'Aangemaakt op',
                 'visible' => true
