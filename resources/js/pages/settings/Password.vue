@@ -3,19 +3,18 @@ import PasswordController from '@/actions/App/Http/Controllers/Settings/Password
 import InputError from '@/components/InputError.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/user-password';
 import { Form, Head } from '@inertiajs/vue3';
-
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem } from '@/types';
 
+const title = 'Wachtwoord';
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Wachtwoord-instellingen',
-        href: edit().url,
+        title: title,
     },
 ];
 </script>
@@ -23,7 +22,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
 
-        <Head title="Wachtwoord-instellingen" />
+        <Head :title="title" />
 
         <SettingsLayout>
             <div class="space-y-6">

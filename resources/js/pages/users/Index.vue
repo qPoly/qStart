@@ -36,10 +36,11 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const title = 'Gebruikers';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Gebruikers',
+        title: title,
     },
 ];
 
@@ -72,12 +73,14 @@ const { getInitials } = useInitials();
 
 <template>
 
-    <Head title="Gebruikers" />
+    <Head :title="title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
             <div class="flex justify-between mb-4">
-                <h1 class="text-2xl font-bold">Gebruikers</h1>
+                <h1 class="text-2xl font-bold">
+                    {{ title }}
+                </h1>
                 <div class="flex items-center gap-2">
                     <PagePreferencesComponent page="users" v-model="pagePrefs" />
                     <Button v-if="can('user.create')" @click="router.visit(create.url())">

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
 import { Form, Head, usePage } from '@inertiajs/vue3';
-
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
@@ -19,10 +17,11 @@ interface Props {
 
 defineProps<Props>();
 
+const title = 'Accountinstellingen';
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Accountinstellingen',
-        href: edit().url,
+        title: title,
     },
 ];
 
@@ -33,7 +32,7 @@ const user = page.props.auth.user;
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
 
-        <Head title="Accountinstellingen" />
+        <Head :title="title" />
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">

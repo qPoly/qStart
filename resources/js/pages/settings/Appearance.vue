@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { type BreadcrumbItem } from '@/types';
-
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/appearance';
+
+const title = 'Weergave-instellingen';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Appearance settings',
-        href: edit().url,
+        title: title,
     },
 ];
 </script>
@@ -20,7 +18,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
 
-        <Head title="Weergave-instellingen" />
+        <Head :title="title" />
 
         <SettingsLayout>
             <div class="space-y-6">

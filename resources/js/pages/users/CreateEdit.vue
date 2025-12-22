@@ -19,6 +19,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const title = props.user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,20 +27,20 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: index.url(),
     },
     {
-        title: props.user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen',
+        title: title,
     },
 ];
 </script>
 
 <template>
 
-    <Head :title="user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen'" />
+    <Head :title="title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="max-w-sm p-4">
             <div class="mb-4 flex justify-between">
                 <h1 class="text-2xl font-bold">
-                    {{ user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen' }}
+                    {{ title }}
                 </h1>
             </div>
 
