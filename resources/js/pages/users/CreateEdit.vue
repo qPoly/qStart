@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { can } from '@/composables/auth';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { create, destroy, edit, index, store, update } from '@/routes/users';
+import { destroy, index, store, update } from '@/routes/users';
 import type { Role, User } from '@/types';
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head, router } from '@inertiajs/vue3';
@@ -27,7 +27,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: props.user ? 'Gebruiker aanpassen' : 'Gebruiker toevoegen',
-        href: props.user ? edit.url(props.user.id) : create.url(),
     },
 ];
 </script>

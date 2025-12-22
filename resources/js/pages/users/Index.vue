@@ -40,7 +40,6 @@ const props = defineProps<Props>();
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Gebruikers',
-        href: index.url(),
     },
 ];
 
