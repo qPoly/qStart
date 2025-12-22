@@ -50,7 +50,7 @@ const search = ref(props.filters.search || '');
 const performSearch = debounce((value: string) => {
     router.get(
         index.url({ mergeQuery: {} }),
-        { search: value },
+        { search: value || undefined },
         { preserveState: true, preserveScroll: true }
     );
 }, 300);
