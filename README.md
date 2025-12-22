@@ -22,3 +22,5 @@ php artisan key:generate
 php artisan migrate --seed
 composer run dev
 ```
+### Multi-tenancy
+This project supports multi-tenancy, allowing you to use it for multiple organizations. Each organization has isolated data, and only an administrator can manage organizations. See branch `multi-tenancy`.
