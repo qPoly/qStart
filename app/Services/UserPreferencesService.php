@@ -122,7 +122,7 @@ class UserPreferencesService
         // First, add columns in the order from user preferences, if they exist in the model
         foreach ($userColumnOrder as $key) {
             if (isset($modelColumnsByKey[$key])) {
-                $syncedColumns[] = array_merge($modelColumnsByKey[$key], $userColumnsByKey[$key]);
+                $syncedColumns[] = array_merge($userColumnsByKey[$key], $modelColumnsByKey[$key]);
             }
         }
 
