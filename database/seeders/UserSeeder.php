@@ -12,7 +12,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::firstOrCreate(
+        // Create "admin"
+        $admin = User::firstOrCreate(
             ['email' => 'info@qpoly.nl'],
             [
                 'name' => 'qPoly',
@@ -20,14 +21,27 @@ class UserSeeder extends Seeder
             ]
         );
 
-        if (!$user->hasRole('Manager')) {
-            $user->assignRole('Manager');
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
+
+        // Create "user"
+        $user = User::firstOrCreate(
+            ['email' => 'user@qpoly.nl'],
+            [
+                'name' => 'User',
+                'password' => 'password',
+            ]
+        );
+
+        if (!$user->hasRole('user')) {
+            $user->assignRole('user');
         }
 
         $users = User::factory()->count(9)->create();
 
         foreach ($users as $user) {
-            $user->assignRole('Medewerker');
+            $user->assignRole('user');
         }
     }
 }

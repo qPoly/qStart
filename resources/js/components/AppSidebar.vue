@@ -16,9 +16,9 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
-    ...can('user.read') ? [{
+    ...can('manage users') ? [{
         title: 'Gebruikers',
-        href: index.url(),
+        href: users.index(),
         icon: Users,
     }] : [],
 ];

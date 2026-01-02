@@ -20,7 +20,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'preferences',
         'password',
     ];
 
@@ -69,26 +68,21 @@ class User extends Authenticatable
                 'key' => 'name',
                 'label' => 'Naam',
                 'visible' => true,
-                'default' => 'asc'
-            ],
-            [
-                'key' => 'role',
-                'label' => 'Rol',
-                'visible' => true
+                'default' => 'asc',
             ],
             [
                 'key' => 'email',
                 'label' => 'E-mailadres',
-                'visible' => true
+                'visible' => true,
             ],
             [
                 'key' => 'created_at',
                 'label' => 'Aangemaakt op',
-                'visible' => true
+                'visible' => true,
             ],
             [
                 'key' => 'updated_at',
-                'label' => 'Aangepast op'
+                'label' => 'Aangepast op',
             ],
         ];
     }

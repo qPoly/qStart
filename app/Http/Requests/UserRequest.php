@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use Spatie\Permission\Models\Role;
 
 class UserRequest extends FormRequest
 {
@@ -40,11 +39,6 @@ class UserRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($user),
             ],
-            'role' => [
-                'required',
-                'string',
-                Rule::exists(Role::class, 'name'),
-            ],
         ];
 
         // Password is required for new users, optional for updates
@@ -75,9 +69,6 @@ class UserRequest extends FormRequest
             'password.mixed' => 'Wachtwoord moet minimaal één hoofdletter en één kleine letter bevatten',
             'password.numbers' => 'Wachtwoord moet minimaal één cijfer bevatten',
             'password.symbols' => 'Wachtwoord moet minimaal één speciaal teken bevatten',
-            'role.required' => 'Rol is verplicht',
-            'role.string' => 'Rol moet tekst zijn',
-            'role.exists' => 'De geselecteerde rol bestaat niet',
         ];
     }
 }

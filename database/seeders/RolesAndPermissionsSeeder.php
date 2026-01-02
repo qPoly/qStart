@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -15,26 +16,41 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         // Flush cache
-        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+        Artisan::call('permission:cache-reset');
 
-        // Create manager permissions
-        $managerPermissions = [
-            'user.read',
-            'user.create',
-            'user.update',
-            'user.delete',
-
-            'user.assign.role',
+        // Define permissions per role
+        $adminPermissions = [
+            'manage users',
+            'manage organisations',
         ];
 
-        foreach ($managerPermissions as $permission) {
+        $userPermissions = [
+            'manage users',
+        ];
+
+        // Create all permissions
+        $allPermissions = array_unique(array_merge($adminPermissions, $userPermissions));
+
+        foreach ($allPermissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        // Create roles and assign existing permissions
-        $managerRole = Role::firstOrCreate(['name' => 'Manager']);
-        $managerRole->givePermissionTo($managerPermissions);
+        // Create roles and assign permissions
+        Role::firstOrCreate(['name' => 'admin'])->syncPermissions($adminPermissions);
+        Role::firstOrCreate(['name' => 'user'])->syncPermissions($userPermissions);
 
-        Role::firstOrCreate(['name' => 'Medewerker']);
+        // Make sure that user "info@qpoly.nl" has the admin role
+        $user = User::where('email', 'info@qpoly.nl')->first();
+
+        if ($user) {
+            $user->assignRole('admin');
+        }
+
+        // Make sure that every user without a role, gets the user role
+        $users = User::whereDoesntHave('roles')->get();
+
+        foreach ($users as $user) {
+            $user->assignRole('user');
+        }
     }
 }

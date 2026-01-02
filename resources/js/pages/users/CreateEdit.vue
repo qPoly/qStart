@@ -4,17 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { can } from '@/composables/auth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy, index, store, update } from '@/routes/users';
-import type { Role, User } from '@/types';
-import { type BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, User } from '@/types';
 import { Form, Head, router } from '@inertiajs/vue3';
 import { Plus, Save, Trash2, X } from 'lucide-vue-next';
 
 interface Props {
-    roles: Role[];
     user?: User;
 }
 
@@ -51,21 +47,6 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <InputError :message="errors.name" />
                 </div>
 
-                <div class="space-y-2" v-if="can('user.assign.role')">
-                    <Label>Rol</Label>
-                    <Select name="role" :default-value="user?.roles[0]?.name">
-                        <SelectTrigger class="w-full">
-                            <SelectValue placeholder="Selecteer een rol" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem v-for="role in roles" :key="role.id" :value="role.name">
-                                {{ role.name }}
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <InputError :message="errors.role" />
-                </div>
-
                 <div class="space-y-2">
                     <Label for="email">E-mailadres</Label>
                     <Input id="email" name="email" type="email" autocomplete="off" :default-value="user?.email" />
@@ -84,7 +65,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         Annuleren
                     </Button>
 
-                    <Dialog v-if="user && can('user.delete')">
+                    <Dialog v-if="user">
                         <DialogTrigger asChild>
                             <Button variant="destructive">
                                 <Trash2 />

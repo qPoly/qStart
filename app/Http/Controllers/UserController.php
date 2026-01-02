@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\UserPreferencesService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -20,10 +21,7 @@ class UserController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:user.read', only: ['index', 'show']),
-            new Middleware('can:user.create', only: ['create', 'store']),
-            new Middleware('can:user.update', only: ['edit', 'update']),
-            new Middleware('can:user.delete', only: ['destroy']),
+            new Middleware('can:manage users'),
         ];
     }
 
@@ -35,15 +33,8 @@ class UserController extends Controller implements HasMiddleware
         // Get user's page preferences
         $userPreferences = $userPreferencesService->getAndUpdatePagePreferences('users');
 
-        // Join roles table for searching and sorting
-        $query = User::query()
-            ->leftJoin('model_has_roles', function ($join) {
-                $join->on('users.id', '=', 'model_has_roles.model_id')
-                    ->where('model_has_roles.model_type', '=', User::class);
-            })
-            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->with(['roles'])
-            ->select('users.*');
+        // Get ordered users
+        $query = User::orderBy($userPreferences['sortColumn'], $userPreferences['sortDirection']);
 
         // Apply sorting
         if ($userPreferences['sortColumn'] === 'role') {
@@ -55,10 +46,10 @@ class UserController extends Controller implements HasMiddleware
         // Apply search filter
         if ($request->has('search')) {
             $search = $request->input('search');
+
             $query->where(function ($q) use ($search) {
                 $q->where('users.name', 'like', "%{$search}%")
-                    ->orWhere('users.email', 'like', "%{$search}%")
-                    ->orWhere('roles.name', 'like', "%{$search}%");
+                    ->orWhere('users.email', 'like', "%{$search}%");
             });
         }
 
@@ -78,19 +69,17 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        return Inertia::render('users/CreateEdit', [
-            'roles' => Role::all(),
-        ]);
+        return Inertia::render('users/CreateEdit');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        $user = User::create($request->validated());
 
         $user = User::create($validated);
 
@@ -112,19 +101,22 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
+        Gate::authorize('mutate', $user);
+
         return Inertia::render('users/CreateEdit', [
-            'roles' => Role::all(['id', 'name']),
-            'user' => $user->load('roles:id,name'),
+            'user' => $user,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, User $user): RedirectResponse
     {
+        Gate::authorize('mutate', $user);
+
         $validated = $request->validated();
 
         if (empty($validated['password'])) {
@@ -133,18 +125,17 @@ class UserController extends Controller implements HasMiddleware
 
         $user->update($validated);
 
-        if ($request->user()->can('user.assign.role')) {
-            $user->syncRoles([$validated['role']]);
-        }
-
         return redirect()->route('users.index', $request->query());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, Request $request)
+    public function destroy(User $user, Request $request): RedirectResponse
     {
+        Gate::authorize('mutate', $user);
+
+        $user->roles()->detach();
         $user->delete();
 
         return redirect()->route('users.index', $request->query());

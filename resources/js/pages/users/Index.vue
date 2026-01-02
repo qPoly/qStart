@@ -12,7 +12,6 @@ import { ref, watch } from 'vue';
 import PagePreferencesComponent from '@/components/PagePreferences.vue';
 import Pagination from '@/components/Pagination.vue';
 import { Input } from '@/components/ui/input';
-import { can } from '@/composables/auth';
 import { create, edit, index } from '@/routes/users';
 
 interface Props {
@@ -83,7 +82,7 @@ const { getInitials } = useInitials();
                 </h1>
                 <div class="flex items-center gap-2">
                     <PagePreferencesComponent page="users" v-model="pagePrefs" />
-                    <Button v-if="can('user.create')" @click="router.visit(create.url({ mergeQuery: {} }))">
+                    <Button @click="router.visit(create.url({ mergeQuery: {} }))">
                         <Plus />
                         Gebruiker toevoegen
                     </Button>
@@ -115,7 +114,7 @@ const { getInitials } = useInitials();
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="user in users.data" :key="user.id">
-                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="can('user.update') ? router.visit(edit.url(user.id, { mergeQuery: {} })) : null">
+                        <TableCell v-for="column in pagePrefs.columns" :key="column.key" v-show="column.visible" @click="router.visit(edit.url(user.id, { mergeQuery: {} }))">
                             <template v-if="column.key === 'avatar'">
                                 <Avatar class="h-8 w-8 overflow-hidden rounded-lg">
                                     <AvatarImage v-if="user.avatar && user.avatar !== ''" :src="user.avatar!" :alt="user.name" />
@@ -125,17 +124,11 @@ const { getInitials } = useInitials();
                                 </Avatar>
                             </template>
 
-                            <template v-if="column.key === 'role'">
-                                <div class="comma-separated">
-                                    <span v-for="role of user.roles" :key="role.id">{{ role.name }}</span>
-                                </div>
-                            </template>
-
                             <template v-if="['id', 'name', 'email'].includes(column.key)">
                                 {{ user[column.key as keyof User] }}
                             </template>
 
-                            <template v-if="['created_at', 'updated_at', 'email_verified_at'].includes(column.key)">
+                            <template v-if="['created_at', 'updated_at'].includes(column.key)">
                                 {{ user[column.key as keyof User] ? new Date(user[column.key as keyof User] as string).toLocaleString('nl-NL') : '' }}
                             </template>
                         </TableCell>
