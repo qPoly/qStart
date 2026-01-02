@@ -44,8 +44,17 @@ export interface Role {
     id: number;
     name: string;
 }
+
+export interface Organisation {
+    id: number;
+    name: string;
+    logo_path: string | null;
+}
+
 export interface User {
     id: number;
+    organisation_id: number | null;
+    organisation?: Organisation;
     name: string;
     email: string;
     avatar: string | null;

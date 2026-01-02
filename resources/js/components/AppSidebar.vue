@@ -2,13 +2,18 @@
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Users } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { Building, LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { can } from '@/composables/auth';
-import { index } from '@/routes/users';
+import OrganisationSwitcher from './OrganisationSwitcher.vue';
+import { dashboard } from '@/routes';
+import users from '@/routes/users';
+import organisations from '@/routes/organisations';
+
+const page = usePage();
+const user = page.props.auth.user;
 
 const mainNavItems: NavItem[] = [
     {
@@ -20,6 +25,11 @@ const mainNavItems: NavItem[] = [
         title: 'Gebruikers',
         href: users.index(),
         icon: Users,
+    }] : [],
+    ...can('manage organisations') && !user.organisation?.id ? [{
+        title: 'Organisaties',
+        href: organisations.index(),
+        icon: Building,
     }] : [],
 ];
 </script>
@@ -43,6 +53,7 @@ const mainNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
+            <OrganisationSwitcher v-if="can('manage organisations')" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

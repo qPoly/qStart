@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -65,6 +66,8 @@ class UserPreferencesService
         switch ($page) {
             case 'users':
                 return new User;
+            case 'organisations':
+                return new Organisation;
             default:
                 return null;
         }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $organisation = Organisation::first();
+
         // Create "admin"
         $admin = User::firstOrCreate(
             ['email' => 'info@qpoly.nl'],
@@ -30,6 +33,7 @@ class UserSeeder extends Seeder
             ['email' => 'user@qpoly.nl'],
             [
                 'name' => 'User',
+                'organisation_id' => $organisation->id,
                 'password' => 'password',
             ]
         );

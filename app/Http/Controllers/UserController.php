@@ -36,11 +36,11 @@ class UserController extends Controller implements HasMiddleware
         // Get ordered users
         $query = User::orderBy($userPreferences['sortColumn'], $userPreferences['sortDirection']);
 
-        // Apply sorting
-        if ($userPreferences['sortColumn'] === 'role') {
-            $query->orderBy('roles.name', $userPreferences['sortDirection']);
+        // Apply organisation filter
+        if ($request->user()->organisation_id) {
+            $query->where('users.organisation_id', $request->user()->organisation_id);
         } else {
-            $query->orderBy($userPreferences['sortColumn'], $userPreferences['sortDirection']);
+            $query->whereNull('users.organisation_id');
         }
 
         // Apply search filter
@@ -81,10 +81,18 @@ class UserController extends Controller implements HasMiddleware
     {
         $user = User::create($request->validated());
 
-        $user = User::create($validated);
+        $authUser = $request->user();
 
-        if ($request->user()->can('user.assign.role')) {
-            $user->syncRoles([$validated['role'] ?? 'Medewerker']);
+        if ($authUser->organisation_id) {
+            // Auth user is in a workspace of an organisation, so assign user role and set organisation
+            $user->organisation_id = $authUser->organisation_id;
+            $user->save();
+            $user->assignRole('user');
+        }
+
+        if (!$authUser->organisation_id) {
+            // Auth user is in admin workspace, so assign admin role
+            $user->assignRole('admin');
         }
 
         return redirect()->route('users.index', $request->query());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Organisation;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,19 +36,22 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user()
+                'user' => $user
                     ? array_merge(
-                        $request->user()->only('id', 'name', 'email', 'avatar'),
+                        $user->load('organisation:id,name')->only('id',  'name', 'email', 'avatar', 'organisation'),
                         [
-                            'permissions' => $request->user()->getAllPermissions()->pluck('name')->toArray(),
+                            'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
                         ]
                     )
                     : null,
             ],
+            'organisations' => $user && $user->can('manage organisations') ? Organisation::all(['id', 'name']) : null,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
