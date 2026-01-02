@@ -38,4 +38,3 @@ test('organisation fillable attributes are name and logo_path', function () {
     expect($organisation->name)->toBe('Test Organisation');
     expect($organisation->logo_path)->toBe('images/logos/test.jpg');
 });
-
