@@ -2,13 +2,13 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { switchMethod } from '@/routes/organisations';
-import { Organisation } from '@/types';
+import { Organisation, User } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { ChevronsUpDown } from 'lucide-vue-next';
 
 const page = usePage();
-const user = page.props.auth.user;
-const organisations = page.props.organisations as Organisation[];
+const user = page.props.auth.user as User;
+const organisations = page.props.auth.organisations as Organisation[];
 
 const { isMobile, state } = useSidebar();
 </script>

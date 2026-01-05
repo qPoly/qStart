@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
+                'organisations' => $user && $user->can('manage organisations') ? Organisation::orderBy('name')->get(['id', 'name']) : null,
                 'user' => $user
                     ? array_merge(
                         $user->load('organisation:id,name')->only('id',  'name', 'email', 'avatar', 'organisation'),
@@ -51,7 +52,6 @@ class HandleInertiaRequests extends Middleware
                     )
                     : null,
             ],
-            'organisations' => $user && $user->can('manage organisations') ? Organisation::all(['id', 'name']) : null,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
