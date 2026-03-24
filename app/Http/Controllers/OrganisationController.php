@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\ResizeImage;
 use App\Http\Requests\OrganisationRequest;
 use App\Models\Organisation;
 use App\Services\UserPreferencesService;
@@ -9,12 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
 
 class OrganisationController extends Controller
 {
@@ -27,7 +24,6 @@ class OrganisationController extends Controller
             new Middleware('can:manage organisations'),
         ];
     }
-
 
     /**
      * Display a listing of the resource.
@@ -145,14 +141,6 @@ class OrganisationController extends Controller
         $organisation->logo_path = $file->store('images/logos', 'public');
         $organisation->save();
 
-        // Resize
-        try {
-            $fileName = $file->hashName();
-            $imagePath = Storage::disk('public')->path('images/logos/' . $fileName);
-            $manager = new ImageManager(Driver::class);
-            $manager->read($file)->scaleDown(width: 800)->save($imagePath);
-        } catch (\Exception $e) {
-            Log::error('Error resizing organisation logo: ' . $e->getMessage());
-        }
+        ResizeImage::scaleDown('public', $organisation->logo_path, 800);
     }
 }
