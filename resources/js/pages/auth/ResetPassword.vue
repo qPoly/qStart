@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { Form, Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { update } from '@/routes/password';
-import { Form, Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
 
 const props = defineProps<{
     token: string;
@@ -32,13 +33,15 @@ const inputEmail = ref(props.email);
 
                 <div class="grid gap-2">
                     <Label for="password">Wachtwoord</Label>
-                    <Input id="password" type="password" name="password" autocomplete="new-password" class="mt-1 block w-full" autofocus placeholder="Wachtwoord" />
+                    <PasswordInput id="password" name="password" autocomplete="new-password" class="mt-1 block w-full" autofocus placeholder="Wachtwoord" />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Bevestig wachtwoord</Label>
-                    <Input id="password_confirmation" type="password" name="password_confirmation" autocomplete="new-password" class="mt-1 block w-full" placeholder="Bevestig wachtwoord" />
+                    <Label for="password_confirmation">
+                        Bevestig wachtwoord
+                    </Label>
+                    <PasswordInput id="password_confirmation" name="password_confirmation" autocomplete="new-password" class="mt-1 block w-full" placeholder="Bevestig wachtwoord" />
                     <InputError :message="errors.password_confirmation" />
                 </div>
 

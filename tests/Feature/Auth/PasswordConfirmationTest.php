@@ -8,10 +8,10 @@ test('confirm password screen can be rendered', function () {
 
     $response = $this->actingAs($user)->get(route('password.confirm'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->component('auth/ConfirmPassword')
+        ->component('auth/ConfirmPassword'),
     );
 });
 

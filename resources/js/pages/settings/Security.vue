@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+import { Form, Head } from '@inertiajs/vue3';
+import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
+import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { Form, Head } from '@inertiajs/vue3';
-import HeadingSmall from '@/components/HeadingSmall.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { type BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem } from '@/types';
 
 const title = 'Wachtwoord';
 
-const breadcrumbItems: BreadcrumbItem[] = [
+const breadcrumbs: BreadcrumbItem[] = [
     {
         title: title,
     },
@@ -20,15 +20,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <AppLayout :breadcrumbs="breadcrumbs">
 
         <Head :title="title" />
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Wachtwoord bijwerken" description="Zorg ervoor dat je account een lang, willekeurig wachtwoord gebruikt om veilig te blijven" />
+                <Heading variant="small" title="Wachtwoord bijwerken" description="Zorg ervoor dat je account een lang, willekeurig wachtwoord gebruikt om veilig te blijven" />
 
-                <Form v-bind="PasswordController.update.form()" :options="{
+                <Form v-bind="SecurityController.update.form()" :options="{
                     preserveScroll: true,
                 }" reset-on-success :reset-on-error="[
                     'password',
@@ -37,19 +37,19 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 ]" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
                     <div class="grid gap-2">
                         <Label for="current_password">Huidig wachtwoord</Label>
-                        <Input id="current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" placeholder="Huidig wachtwoord" />
+                        <PasswordInput id="current_password" name="current_password" class="mt-1 block w-full" autocomplete="current-password" placeholder="Huidig wachtwoord" />
                         <InputError :message="errors.current_password" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password">Nieuw wachtwoord</Label>
-                        <Input id="password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" placeholder="Nieuw wachtwoord" />
+                        <PasswordInput id="password" name="password" class="mt-1 block w-full" autocomplete="new-password" placeholder="Nieuw wachtwoord" />
                         <InputError :message="errors.password" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="password_confirmation">Bevestig wachtwoord</Label>
-                        <Input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" placeholder="Bevestig wachtwoord" />
+                        <PasswordInput id="password_confirmation" name="password_confirmation" class="mt-1 block w-full" autocomplete="new-password" placeholder="Bevestig wachtwoord" />
                         <InputError :message="errors.password_confirmation" />
                     </div>
 

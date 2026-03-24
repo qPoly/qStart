@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { SidebarInset } from '@/components/ui/sidebar';
 import { computed } from 'vue';
+import { SidebarInset } from '@/components/ui/sidebar';
+import type { AppVariant } from '@/types';
 
-interface Props {
-    variant?: 'header' | 'sidebar';
+type Props = {
+    variant?: AppVariant;
     class?: string;
-}
+};
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    variant: 'sidebar',
+});
 const className = computed(() => props.class);
 </script>
 

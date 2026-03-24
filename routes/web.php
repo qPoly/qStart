@@ -9,9 +9,7 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::redirect('/', '/dashboard')->name('home');
 
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 
     Route::put('page-preferences/{page}', [UserPreferencesController::class, 'update'])->name('pagePreferences.update');
 

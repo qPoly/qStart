@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,7 +11,6 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/vue3';
 
 defineProps<{
     status?: string;
@@ -42,7 +43,7 @@ defineProps<{
                             Wachtwoord vergeten?
                         </TextLink>
                     </div>
-                    <Input id="password" type="password" name="password" required :tabindex="2" autocomplete="current-password" placeholder="Wachtwoord" />
+                    <PasswordInput id="password" name="password" required :tabindex="2" autocomplete="current-password" placeholder="Wachtwoord" />
                     <InputError :message="errors.password" />
                 </div>
 
