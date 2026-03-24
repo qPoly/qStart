@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -103,6 +104,10 @@ class OrganisationController extends Controller
      */
     public function update(OrganisationRequest $request, Organisation $organisation): RedirectResponse
     {
+        if ($request->input('logo_path') === null && $organisation->logo_path && Storage::disk('public')->exists($organisation->logo_path)) {
+            Storage::disk('public')->delete($organisation->logo_path);
+        }
+
         $organisation->update($request->validated());
 
         if ($request->hasFile('logo_path')) {
@@ -117,6 +122,10 @@ class OrganisationController extends Controller
      */
     public function destroy(Organisation $organisation, Request $request): RedirectResponse
     {
+        if ($organisation->logo_path && Storage::disk('public')->exists($organisation->logo_path)) {
+            Storage::disk('public')->delete($organisation->logo_path);
+        }
+
         $organisation->delete();
 
         return redirect()->route('organisations.index', $request->query());
