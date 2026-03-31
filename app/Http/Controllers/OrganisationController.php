@@ -9,12 +9,13 @@ use App\Services\UserPreferencesService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class OrganisationController extends Controller
+class OrganisationController extends Controller implements HasMiddleware
 {
     /**
      * Get the middleware that should be assigned to the controller.
