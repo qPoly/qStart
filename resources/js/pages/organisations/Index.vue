@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import debounce from 'lodash/debounce';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import AppLayout from '@/layouts/AppLayout.vue';
-import type { BreadcrumbItem, Column, UserPreferences, User, Organisation } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
+import debounce from 'lodash/debounce';
 import { ArrowDownAz, ArrowUpAz, ArrowUpDown, Plus, Search } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import PagePreferencesComponent from '@/components/PagePreferences.vue';
 import Pagination from '@/components/Pagination.vue';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { create, edit, index } from '@/routes/organisations';
+import type { BreadcrumbItem, Column, UserPreferences, Organisation } from '@/types';
 
 interface Props {
     organisations: {
@@ -53,7 +53,9 @@ const performSearch = debounce((value: string) => {
 }, 300);
 
 const performSort = debounce((column: Column) => {
-    if (column.unsortable) return;
+    if (column.unsortable) {
+        return;
+    }
 
     router.get(index.url({ mergeQuery: {} }), {
         sortColumn: column.key,

@@ -1,4 +1,4 @@
-import { Organisation } from "./organisation";
+import type { Organisation } from "./organisation";
 
 export type User = {
     id: number;

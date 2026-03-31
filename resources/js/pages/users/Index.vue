@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import debounce from 'lodash/debounce';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useInitials } from '@/composables/useInitials';
-import AppLayout from '@/layouts/AppLayout.vue';
-import type { BreadcrumbItem, Column, UserPreferences, User } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
+import debounce from 'lodash/debounce';
 import { ArrowDownAz, ArrowUpAz, ArrowUpDown, Plus, Search } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import PagePreferencesComponent from '@/components/PagePreferences.vue';
 import Pagination from '@/components/Pagination.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useInitials } from '@/composables/useInitials';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { create, edit, index } from '@/routes/users';
+import type { BreadcrumbItem, Column, UserPreferences, User } from '@/types';
 
 interface Props {
     users: {
@@ -55,7 +55,9 @@ const performSearch = debounce((value: string) => {
 }, 300);
 
 const performSort = debounce((column: Column) => {
-    if (column.unsortable) return;
+    if (column.unsortable) {
+        return;
+    }
 
     router.get(index.url({ mergeQuery: {} }), {
         sortColumn: column.key,

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Head, useForm, router, Form } from '@inertiajs/vue3';
+import { Plus, Save, Trash2, X } from 'lucide-vue-next';
 import FileUpload from '@/components/FileUpload.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -7,9 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { destroy, index } from '@/routes/organisations';
-import { BreadcrumbItem, Organisation } from '@/types';
-import { Head, useForm, router, Form } from '@inertiajs/vue3';
-import { Plus, Save, Trash2, X } from 'lucide-vue-next';
+import type { BreadcrumbItem, Organisation } from '@/types';
 
 interface Props {
     organisation?: Organisation;
