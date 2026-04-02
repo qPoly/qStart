@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, router } from '@inertiajs/vue3';
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { ArrowDownAz, ArrowUpAz, ArrowUpDown, Plus, Search } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import PagePreferencesComponent from '@/components/PagePreferences.vue';

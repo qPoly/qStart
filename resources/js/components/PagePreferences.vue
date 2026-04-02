@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -9,6 +8,7 @@ import Select from './ui/select/Select.vue';
 import draggable from 'vuedraggable'
 import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { update } from '@/routes/pagePreferences';
+import { useHttp } from '@inertiajs/vue3';
 
 interface Props {
     page: string;
@@ -18,12 +18,14 @@ const props = defineProps<Props>();
 const preferences = defineModel<UserPreferences>({ required: true });
 
 const updatePreferences = () => {
-    axios.put(update.url({ page: props.page }), {
+    const http = useHttp({
         columns: preferences.value.columns ? preferences.value.columns.map(column => ({ ...column })) : [],
         sortColumn: preferences.value.sortColumn,
         sortDirection: preferences.value.sortDirection,
         perPage: preferences.value.perPage,
     });
+
+    http.put(update.url({ page: props.page }));
 };
 </script>
 
