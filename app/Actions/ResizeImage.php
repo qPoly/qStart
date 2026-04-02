@@ -22,8 +22,8 @@ class ResizeImage
 
         if ($mimeType == 'image/jpeg' || $mimeType == 'image/png' || $mimeType == 'image/gif' || $mimeType == 'image/webp') {
             try {
-                $manager = new ImageManager(Driver::class);
-                $manager->read($filePath)->scaleDown(width: $width)->save($filePath);
+                $manager = ImageManager::usingDriver(Driver::class);
+                $manager->decode($filePath)->scaleDown(width: $width)->save($filePath);
             } catch (\Exception $e) {
                 Log::error('Error resizing image: ' . $e->getMessage());
             }
