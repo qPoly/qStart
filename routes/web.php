@@ -4,7 +4,6 @@ use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\Settings\UserPreferencesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::redirect('/', '/dashboard')->name('home');
@@ -15,8 +14,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('organisations/{organisationId}/switch', [OrganisationController::class, 'switch'])->name('organisations.switch');
 
-    Route::resource('organisations', OrganisationController::class);
-    Route::resource('users', UserController::class);
+    Route::resource('organisaties', OrganisationController::class)->names('organisations')->parameters([
+        'organisaties' => 'organisation'
+    ]);
+
+    Route::resource('gebruikers', UserController::class)->names('users')->parameters([
+        'gebruikers' => 'user'
+    ]);
 });
 
 require __DIR__ . '/settings.php';
